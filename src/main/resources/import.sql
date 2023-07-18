@@ -1,0 +1,10 @@
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('Prison Break', '2005', 'AmazonPrime', 4.9);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('Breaking Bad', '2008', 'Netflix', 9.5);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('Game of Thrones', '2011', 'HBO', 9.3);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('Stranger Things', '2016', 'Netflix', 8.8);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('The Office', '2005', 'Netflix', 8.9);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('Friends', '1994', 'Netflix', 8.9);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('The Crown', '2016', 'Netflix', 8.7);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('Black Mirror', '2011', 'Netflix', 8.8);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('The Big Bang Theory', '2007', 'CBS', 8.1);
+INSERT INTO tb_series (title, serie_year, platform, score)VALUES ('Sherlock', '2010', 'BBC', 9.1);
