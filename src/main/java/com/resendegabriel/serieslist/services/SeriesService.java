@@ -32,4 +32,19 @@ public class SeriesService {
 	public Series insert(Series obj) {
 		return seriesRepository.save(obj);
 	}
+	
+	@Transactional
+    public SeriesDTO update(Long id, SeriesDTO updatedSeriesDTO) {
+        Series series = seriesRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Série não encontrada"));
+        ConvertToEntitySeries(series, updatedSeriesDTO);
+        seriesRepository.save(series);
+        return new SeriesDTO(series);
+    }
+
+	private void ConvertToEntitySeries(Series series, SeriesDTO dto) {
+		series.setTitle(dto.getTitle());
+		series.setYear(dto.getYear());
+		series.setPlatform(dto.getPlatform());
+		series.setScore(dto.getScore());
+	}
 }
