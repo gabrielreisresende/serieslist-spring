@@ -40,6 +40,11 @@ public class SeriesService {
         seriesRepository.save(series);
         return new SeriesDTO(series);
     }
+	
+	@Transactional
+	public void delete(Long id) {
+		seriesRepository.deleteById(id);
+	}
 
 	private void ConvertToEntitySeries(Series series, SeriesDTO dto) {
 		series.setTitle(dto.getTitle());

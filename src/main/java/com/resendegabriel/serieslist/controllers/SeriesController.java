@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,10 +42,16 @@ public class SeriesController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(new SeriesDTO(obj));
 	}
-	
+
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<SeriesDTO> update(@PathVariable Long id, @RequestBody SeriesDTO obj){
+	public ResponseEntity<SeriesDTO> update(@PathVariable Long id, @RequestBody SeriesDTO obj) {
 		obj = seriesService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		seriesService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
