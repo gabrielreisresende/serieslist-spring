@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +28,14 @@ public class SeriesController {
 	private SeriesService seriesService;
 
 	@GetMapping
-	public List<SeriesDTO> findAll() {
-		return seriesService.findAll();
+	public ResponseEntity<List<SeriesDTO>> findAll() {
+		List<SeriesDTO> seriesList = seriesService.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body(seriesList);
 	}
 
 	@GetMapping(value = "/{id}")
-	public SeriesDTO findById(@PathVariable Long id) {
-		return seriesService.findById(id);
+	public ResponseEntity<SeriesDTO> findById(@PathVariable Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(seriesService.findById(id));
 	}
 
 	@PostMapping
@@ -50,8 +52,8 @@ public class SeriesController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<String> delete(@PathVariable Long id) {
 		seriesService.delete(id);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.status(HttpStatus.OK).body("Product deleted succesfully.");
 	}
 }
