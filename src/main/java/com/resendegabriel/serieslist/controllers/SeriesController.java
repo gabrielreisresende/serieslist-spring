@@ -29,8 +29,7 @@ public class SeriesController {
 
 	@GetMapping
 	public ResponseEntity<List<SeriesDTO>> findAll() {
-		List<SeriesDTO> seriesList = seriesService.findAll();
-		return ResponseEntity.status(HttpStatus.OK).body(seriesList);
+		return ResponseEntity.status(HttpStatus.OK).body(seriesService.findAll());
 	}
 
 	@GetMapping(value = "/{id}")
@@ -39,21 +38,19 @@ public class SeriesController {
 	}
 
 	@PostMapping
-	public ResponseEntity<SeriesDTO> insert(@RequestBody Series obj) {
-		obj = seriesService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(new SeriesDTO(obj));
+	public ResponseEntity<SeriesDTO> insert(@RequestBody Series serie) {
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(serie.getId()).toUri();
+		return ResponseEntity.created(uri).body(seriesService.insert(serie));
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<SeriesDTO> update(@PathVariable Long id, @RequestBody SeriesDTO obj) {
-		obj = seriesService.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<SeriesDTO> update(@PathVariable Long id, @RequestBody Series serie) {
+		return ResponseEntity.ok().body(seriesService.update(id, serie));
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		seriesService.delete(id);
-		return ResponseEntity.status(HttpStatus.OK).body("Product deleted succesfully.");
+		return ResponseEntity.status(HttpStatus.OK).body("Serie deleted succesfully.");
 	}
 }

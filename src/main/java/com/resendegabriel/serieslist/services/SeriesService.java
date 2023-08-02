@@ -18,38 +18,36 @@ public class SeriesService {
 
 	@Transactional(readOnly = true)
 	public List<SeriesDTO> findAll() {
-		List<Series> list = seriesRepository.findAll();
-		return list.stream().map(x -> new SeriesDTO(x)).toList();
+		return seriesRepository.findAll().stream().map(serie -> new SeriesDTO(serie)).toList();
 	}
 
 	@Transactional(readOnly = true)
 	public SeriesDTO findById(Long id) {
-		Series result = seriesRepository.findById(id).get();
-		return new SeriesDTO(result);
+		return new SeriesDTO(seriesRepository.findById(id).get());
 	}
 
 	@Transactional
-	public Series insert(Series obj) {
-		return seriesRepository.save(obj);
+	public SeriesDTO insert(Series serie) {
+		return new SeriesDTO(seriesRepository.save(serie));
 	}
-	
+
 	@Transactional
-    public SeriesDTO update(Long id, SeriesDTO updatedSeriesDTO) {
-        Series series = seriesRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Série não encontrada"));
-        ConvertToEntitySeries(series, updatedSeriesDTO);
-        seriesRepository.save(series);
-        return new SeriesDTO(series);
-    }
-	
+	public SeriesDTO update(Long id, Series serie) {
+		Series entity = seriesRepository.getReferenceById(id);
+		updateData(entity, serie);
+		return new SeriesDTO(seriesRepository.save(entity));
+	}
+
 	@Transactional
 	public void delete(Long id) {
 		seriesRepository.deleteById(id);
 	}
 
-	private void ConvertToEntitySeries(Series series, SeriesDTO dto) {
-		series.setTitle(dto.getTitle());
-		series.setYear(dto.getYear());
-		series.setPlatform(dto.getPlatform());
-		series.setScore(dto.getScore());
+	private void updateData(Series entity, Series serie) {
+		entity.setId(serie.getId());
+		entity.setTitle(serie.getTitle());
+		entity.setPlatform(serie.getPlatform());
+		entity.setScore(serie.getScore());
+		entity.setYear(serie.getYear());
 	}
 }
