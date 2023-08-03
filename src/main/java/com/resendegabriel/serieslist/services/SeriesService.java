@@ -13,6 +13,8 @@ import com.resendegabriel.serieslist.repositories.SeriesRepository;
 import com.resendegabriel.serieslist.services.exceptions.DatabaseException;
 import com.resendegabriel.serieslist.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class SeriesService {
 
@@ -36,9 +38,17 @@ public class SeriesService {
 
 	@Transactional
 	public SeriesDTO update(Long id, Series serie) {
-		Series entity = seriesRepository.getReferenceById(id);
-		updateData(entity, serie);
-		return new SeriesDTO(seriesRepository.save(entity));
+		try {
+			if (seriesRepository.existsById(id)) {
+				Series entity = seriesRepository.getReferenceById(id);
+				updateData(entity, serie);
+				return new SeriesDTO(seriesRepository.save(entity));
+			} else {
+				throw new ResourceNotFoundException(id);
+			}
+		} catch (EntityNotFoundException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 
 	@Transactional
