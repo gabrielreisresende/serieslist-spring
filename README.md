@@ -9,7 +9,7 @@ Repository, Service e Controller. Além disso, foi desenvolvido utilizando boas 
 - Spring Boot 3
 - Maven
 - Spring Data JPA
-- Banco de dados H2
+- MySQL
 
 ## Conceitos abordados:
 - Padrão Rest para API web
@@ -19,6 +19,7 @@ Repository, Service e Controller. Além disso, foi desenvolvido utilizando boas 
 - Controller, service, repository
 - Padrão DTO
 - Consultas SQL no Spring Data JPA
+- Tratamento de excessões
 
 ## Endpoints:
 Este projeto oferece alguns endpoints. Você pode testá-los usando um cliente REST, como, por exemplo, o Postman. Aqui estão alguns exemplos de endpoints disponíveis:
