@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.resendegabriel.serieslist.dto.SeriesDTO;
 import com.resendegabriel.serieslist.entities.Series;
 import com.resendegabriel.serieslist.repositories.SeriesRepository;
+import com.resendegabriel.serieslist.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class SeriesService {
@@ -23,7 +24,7 @@ public class SeriesService {
 
 	@Transactional(readOnly = true)
 	public SeriesDTO findById(Long id) {
-		return new SeriesDTO(seriesRepository.findById(id).get());
+		return new SeriesDTO(seriesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
 	}
 
 	@Transactional
