@@ -3,12 +3,14 @@ package com.resendegabriel.serieslist.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.resendegabriel.serieslist.dto.SeriesDTO;
 import com.resendegabriel.serieslist.entities.Series;
 import com.resendegabriel.serieslist.repositories.SeriesRepository;
+import com.resendegabriel.serieslist.services.exceptions.DatabaseException;
 import com.resendegabriel.serieslist.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -41,7 +43,15 @@ public class SeriesService {
 
 	@Transactional
 	public void delete(Long id) {
-		seriesRepository.deleteById(id);
+		try {
+			if (seriesRepository.existsById(id)) {
+				seriesRepository.deleteById(id);
+			} else {
+				throw new ResourceNotFoundException(id);
+			}
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 
 	private void updateData(Series entity, Series serie) {
