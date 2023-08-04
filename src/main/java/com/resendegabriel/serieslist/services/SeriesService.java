@@ -37,7 +37,7 @@ public class SeriesService {
 	}
 
 	@Transactional
-	public SeriesDTO update(Long id, Series serie) {
+	public SeriesDTO update(Long id, SeriesDTO serie) {
 		try {
 			if (seriesRepository.existsById(id)) {
 				Series entity = seriesRepository.getReferenceById(id);
@@ -64,8 +64,7 @@ public class SeriesService {
 		}
 	}
 
-	private void updateData(Series entity, Series serie) {
-		entity.setId(serie.getId());
+	private void updateData(Series entity, SeriesDTO serie) {
 		entity.setTitle(serie.getTitle());
 		entity.setPlatform(serie.getPlatform());
 		entity.setScore(serie.getScore());
