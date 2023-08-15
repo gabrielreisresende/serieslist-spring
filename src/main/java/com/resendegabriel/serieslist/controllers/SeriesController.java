@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.resendegabriel.serieslist.dto.SeriesDTO;
-import com.resendegabriel.serieslist.entities.Series;
 import com.resendegabriel.serieslist.services.SeriesService;
 
 @RestController
@@ -38,7 +37,7 @@ public class SeriesController {
 	}
 
 	@PostMapping
-	public ResponseEntity<SeriesDTO> insert(@RequestBody Series serie) {
+	public ResponseEntity<SeriesDTO> insert(@RequestBody SeriesDTO serie) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(serie.getId()).toUri();
 		return ResponseEntity.created(uri).body(seriesService.insert(serie));
 	}

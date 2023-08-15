@@ -2,11 +2,15 @@ package com.resendegabriel.serieslist.services;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.resendegabriel.serieslist.controllers.SeriesController;
 import com.resendegabriel.serieslist.dto.SeriesDTO;
 import com.resendegabriel.serieslist.entities.Series;
 import com.resendegabriel.serieslist.repositories.SeriesRepository;
@@ -23,17 +27,25 @@ public class SeriesService {
 
 	@Transactional(readOnly = true)
 	public List<SeriesDTO> findAll() {
-		return seriesRepository.findAll().stream().map(serie -> new SeriesDTO(serie)).toList();
+		List<SeriesDTO> seriesDTOs = seriesRepository.findAll().stream().map(serie -> new SeriesDTO(serie)).toList();
+		seriesDTOs.stream().forEach(s -> s.add(linkTo(methodOn(SeriesController.class).findById(s.getId())).withSelfRel()));
+		return seriesDTOs;
 	}
 
 	@Transactional(readOnly = true)
 	public SeriesDTO findById(Long id) {
-		return new SeriesDTO(seriesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
+		SeriesDTO dto = new SeriesDTO(seriesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
+		dto.add(linkTo(methodOn(SeriesController.class).findById(id)).withSelfRel());
+		return dto;
 	}
 
 	@Transactional
-	public SeriesDTO insert(Series serie) {
-		return new SeriesDTO(seriesRepository.save(serie));
+	public SeriesDTO insert(SeriesDTO serie) {
+		Series entity = new Series();
+		updateData(entity, serie);
+		SeriesDTO dto = new SeriesDTO(seriesRepository.save(entity));
+		dto.add(linkTo(methodOn(SeriesController.class).findById(dto.getId())).withSelfRel());
+		return dto;
 	}
 
 	@Transactional
@@ -42,7 +54,9 @@ public class SeriesService {
 			if (seriesRepository.existsById(id)) {
 				Series entity = seriesRepository.getReferenceById(id);
 				updateData(entity, serie);
-				return new SeriesDTO(seriesRepository.save(entity));
+				SeriesDTO dto = new SeriesDTO(seriesRepository.save(entity));
+				dto.add(linkTo(methodOn(SeriesController.class).findById(id)).withSelfRel());
+				return dto;
 			} else {
 				throw new ResourceNotFoundException(id);
 			}
